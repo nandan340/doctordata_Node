@@ -1,6 +1,6 @@
 # doctordata_Node
 Project to display data through API using Node.Js, Angular.js and Mongodb
-
+It will take few seconds to load inital data.
 Setps TO run :
 
 Install Node Js. Start node server using command node app.js. No Need to setup database. Database is on mlab Cloud paltform. Database used Mongo Db.
