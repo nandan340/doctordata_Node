@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.20/angular.js"></script>
+    <script src="/javascripts/angularController.js"></script>
+
+    <!-- Bootstrap files -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+
+  </head>
+
+  <body ng-app = "doctorApp" ng-controller = "doctorController">
+
+
+  		<!-- <div>
+  			<div class='container-fluid'> <pre>State: {{selected| json}}</pre>
+
+        	<input class="input-large" type="text" ng-model="selected" typeahead="city for city in cityList | filter:$viewValue | limitTo:8">
+        	</div>
+  		</div> -->
+
+  		<div>
+  			<input style = "width: 70%" name = "searchText" ng-model = "searchText" type="text" placeholder="Search.." typeahead="city for city in cityList | filter:$viewValue | limitTo:8" ng-change="checkIfEmpty()">
+
+  			<input class="btn btn-primary" type="button" value="Search" name="Search" ng-click = "assignSearchText()">
+
+  			<input class="btn btn-primary" type="button" name="export" ng-model="export" value = "Export To Excel" ng-click = "exportToExcel()">
+  		</div>
+
+  		<table class="table table-bordered">
+		  <thead>
+		    <tr>
+		      <th class="alignCenter">change_type</th>
+<th class="alignCenter">covered_recipient_type</th>
+<th class="alignCenter">teaching_hospital_ccn</th>
+<th class="alignCenter">teaching_hospital_id</th>
+<th class="alignCenter">teaching_hospital_name</th>
+<th class="alignCenter">physician_profile_id</th>
+<th class="alignCenter">physician_first_name</th>
+<th class="alignCenter">physician_middle_name</th>
+<th class="alignCenter">physician_last_name</th>
+<th class="alignCenter">physician_name_suffix</th>
+<th class="alignCenter">recipient_primary_business_street_address_line1</th>
+<th class="alignCenter">recipient_primary_business_street_address_line2</th>
+<th class="alignCenter">recipient_city</th>
+<th class="alignCenter">recipient_state</th>
+<th class="alignCenter">recipient_zip_code</th>
+<th class="alignCenter">recipient_country</th>
+<th class="alignCenter">recipient_province</th>
+<th class="alignCenter">recipient_postal_code</th>
+<th class="alignCenter">physician_primary_type</th>
+<th class="alignCenter">physician_specialty</th>
+<th class="alignCenter">physician_license_state_code1</th>
+<th class="alignCenter">physician_license_state_code2</th>
+<th class="alignCenter">physician_license_state_code3</th>
+<th class="alignCenter">physician_license_state_code4</th>
+<th class="alignCenter">physician_license_state_code5</th>
+<th class="alignCenter">submitting_applicable_manufacturer_or_applicable_gpo_name</th>
+<th class="alignCenter">applicable_manufacturer_or_applicable_gpo_making_payment_id</th>
+<th class="alignCenter">applicable_manufacturer_or_applicable_gpo_making_payment_name</th>
+<th class="alignCenter">applicable_manufacturer_or_applicable_gpo_making_payment_state</th>
+<th class="alignCenter">applicable_manufacturer_or_applicable_gpo_making_payment_country</th>
+<th class="alignCenter">total_amount_of_payment_usdollars</th>
+<th class="alignCenter">date_of_payment</th>
+<th class="alignCenter">number_of_payments_included_in_total_amount</th>
+<th class="alignCenter">form_of_payment_or_transfer_of_value</th>
+<th class="alignCenter">nature_of_payment_or_transfer_of_value</th>
+<th class="alignCenter">city_of_travel</th>
+<th class="alignCenter">state_of_travel</th>
+<th class="alignCenter">country_of_travel</th>
+<th class="alignCenter">physician_ownership_indicator</th>
+<th class="alignCenter">third_party_payment_recipient_indicator</th>
+<th class="alignCenter">name_of_third_party_entity_receiving_payment_or_transfer_of_value</th>
+<th class="alignCenter">charity_indicator</th>
+<th class="alignCenter">third_party_equals_covered_recipient_indicator</th>
+<th class="alignCenter">contextual_information</th>
+<th class="alignCenter">delay_in_publication_indicator</th>
+<th class="alignCenter">record_id</th>
+<th class="alignCenter">dispute_status_for_publication</th>
+<th class="alignCenter">product_indicator</th>
+<th class="alignCenter">name_of_associated_covered_drug_or_biological1</th>
+<th class="alignCenter">name_of_associated_covered_drug_or_biological2</th>
+<th class="alignCenter">name_of_associated_covered_drug_or_biological3</th>
+<th class="alignCenter">name_of_associated_covered_drug_or_biological4</th>
+<th class="alignCenter">name_of_associated_covered_drug_or_biological5</th>
+<th class="alignCenter">ndc_of_associated_covered_drug_or_biological1</th>
+<th class="alignCenter">ndc_of_associated_covered_drug_or_biological2</th>
+<th class="alignCenter">ndc_of_associated_covered_drug_or_biological3</th>
+<th class="alignCenter">ndc_of_associated_covered_drug_or_biological4</th>
+<th class="alignCenter">ndc_of_associated_covered_drug_or_biological5</th>
+<th class="alignCenter">name_of_associated_covered_device_or_medical_supply1</th>
+<th class="alignCenter">name_of_associated_covered_device_or_medical_supply2</th>
+<th class="alignCenter">name_of_associated_covered_device_or_medical_supply3</th>
+<th class="alignCenter">name_of_associated_covered_device_or_medical_supply4</th>
+<th class="alignCenter">name_of_associated_covered_device_or_medical_supply5</th>
+<th class="alignCenter">program_year</th>
+<th class="alignCenter">payment_publication_date</th>
+		    </tr>
+		  </thead>
+		  <tbody ng-repeat = "data in filteredTableData = (tableData | filter:customSearchText)">
+		  	<!-- data in tableData | filter : searchText -->
+		    <tr>
+		     <td class ="alignCenter">{{data.change_type}}</td>
+<td class ="alignCenter">{{data.covered_recipient_type}}</td>
+<td class ="alignCenter">{{data.teaching_hospital_ccn}}</td>
+<td class ="alignCenter">{{data.teaching_hospital_id}}</td>
+<td class ="alignCenter">{{data.teaching_hospital_name}}</td>
+<td class ="alignCenter">{{data.physician_profile_id}}</td>
+<td class ="alignCenter">{{data.physician_first_name}}</td>
+<td class ="alignCenter">{{data.physician_middle_name}}</td>
+<td class ="alignCenter">{{data.physician_last_name}}</td>
+<td class ="alignCenter">{{data.physician_name_suffix}}</td>
+<td class ="alignCenter">{{data.recipient_primary_business_street_address_line1}}</td>
+<td class ="alignCenter">{{data.recipient_primary_business_street_address_line2}}</td>
+<td class ="alignCenter">{{data.recipient_city}}</td>
+<td class ="alignCenter">{{data.recipient_state}}</td>
+<td class ="alignCenter">{{data.recipient_zip_code}}</td>
+<td class ="alignCenter">{{data.recipient_country}}</td>
+<td class ="alignCenter">{{data.recipient_province}}</td>
+<td class ="alignCenter">{{data.recipient_postal_code}}</td>
+<td class ="alignCenter">{{data.physician_primary_type}}</td>
+<td class ="alignCenter">{{data.physician_specialty}}</td>
+<td class ="alignCenter">{{data.physician_license_state_code1}}</td>
+<td class ="alignCenter">{{data.physician_license_state_code2}}</td>
+<td class ="alignCenter">{{data.physician_license_state_code3}}</td>
+<td class ="alignCenter">{{data.physician_license_state_code4}}</td>
+<td class ="alignCenter">{{data.physician_license_state_code5}}</td>
+<td class ="alignCenter">{{data.submitting_applicable_manufacturer_or_applicable_gpo_name}}</td>
+<td class ="alignCenter">{{data.applicable_manufacturer_or_applicable_gpo_making_payment_id}}</td>
+<td class ="alignCenter">{{data.applicable_manufacturer_or_applicable_gpo_making_payment_name}}</td>
+<td class ="alignCenter">{{data.applicable_manufacturer_or_applicable_gpo_making_payment_state}}</td>
+<td class ="alignCenter">{{data.applicable_manufacturer_or_applicable_gpo_making_payment_country}}</td>
+<td class ="alignCenter">{{data.total_amount_of_payment_usdollars}}</td>
+<td class ="alignCenter">{{data.date_of_payment}}</td>
+<td class ="alignCenter">{{data.number_of_payments_included_in_total_amount}}</td>
+<td class ="alignCenter">{{data.form_of_payment_or_transfer_of_value}}</td>
+<td class ="alignCenter">{{data.nature_of_payment_or_transfer_of_value}}</td>
+<td class ="alignCenter">{{data.city_of_travel}}</td>
+<td class ="alignCenter">{{data.state_of_travel}}</td>
+<td class ="alignCenter">{{data.country_of_travel}}</td>
+<td class ="alignCenter">{{data.physician_ownership_indicator}}</td>
+<td class ="alignCenter">{{data.third_party_payment_recipient_indicator}}</td>
+<td class ="alignCenter">{{data.name_of_third_party_entity_receiving_payment_or_transfer_of_valu}}</td>
+<td class ="alignCenter">{{data.charity_indicator}}</td>
+<td class ="alignCenter">{{data.third_party_equals_covered_recipient_indicator}}</td>
+<td class ="alignCenter">{{data.contextual_information}}</td>
+<td class ="alignCenter">{{data.delay_in_publication_indicator}}</td>
+<td class ="alignCenter">{{data.record_id}}</td>
+<td class ="alignCenter">{{data.dispute_status_for_publication}}</td>
+<td class ="alignCenter">{{data.product_indicator}}</td>
+<td class ="alignCenter">{{data.name_of_associated_covered_drug_or_biological1}}</td>
+<td class ="alignCenter">{{data.name_of_associated_covered_drug_or_biological2}}</td>
+<td class ="alignCenter">{{data.name_of_associated_covered_drug_or_biological3}}</td>
+<td class ="alignCenter">{{data.name_of_associated_covered_drug_or_biological4}}</td>
+<td class ="alignCenter">{{data.name_of_associated_covered_drug_or_biological5}}</td>
+<td class ="alignCenter">{{data.ndc_of_associated_covered_drug_or_biological1}}</td>
+<td class ="alignCenter">{{data.ndc_of_associated_covered_drug_or_biological2}}</td>
+<td class ="alignCenter">{{data.ndc_of_associated_covered_drug_or_biological3}}</td>
+<td class ="alignCenter">{{data.ndc_of_associated_covered_drug_or_biological4}}</td>
+<td class ="alignCenter">{{data.ndc_of_associated_covered_drug_or_biological5}}</td>
+<td class ="alignCenter">{{data.name_of_associated_covered_device_or_medical_supply1}}</td>
+<td class ="alignCenter">{{data.name_of_associated_covered_device_or_medical_supply2}}</td>
+<td class ="alignCenter">{{data.name_of_associated_covered_device_or_medical_supply3}}</td>
+<td class ="alignCenter">{{data.name_of_associated_covered_device_or_medical_supply4}}</td>
+<td class ="alignCenter">{{data.name_of_associated_covered_device_or_medical_supply5}}</td>
+<td class ="alignCenter">{{data.program_year}}</td>
+<td class ="alignCenter">{{data.payment_publication_date}}</td>
+
+		    </tr>
+		  </tbody>
+		</table>
+
+
+  </body>
+
+</html>
